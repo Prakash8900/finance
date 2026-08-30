@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fibbl - Smart Cash Book | Income & Expense Tracker</title>
+    <meta name="description" content="Fibbl Smart Cash Book — Track daily income & expenses offline. Free, private, no ads, no login needed. Works on any device.">
+    <meta name="theme-color" content="#1B4F8A">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Fibbl">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/images/icon-192.png">
+    <link rel="apple-touch-icon" href="assets/images/icon-192.png">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- ═══════════════ SIDEBAR OVERLAY ═══════════════ -->
+    <div id="sidebar-overlay" class="sidebar-overlay" role="presentation"></div>
+
+    <!-- ═══════════════ PWA INSTALL BANNER ═══════════════ -->
+    <div id="pwa-install-banner" class="pwa-banner hidden" role="complementary" aria-label="Install app">
+        <div class="pwa-banner-left">
+            <svg width="32" height="32" viewBox="0 0 40 40" fill="none">
+                <rect width="40" height="40" rx="10" fill="url(#bannerGrad)"/>
+                <text x="12" y="27" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="white">F</text>
+                <defs><linearGradient id="bannerGrad" x1="0" y1="0" x2="40" y2="40"><stop offset="0%" stop-color="#1B4F8A"/><stop offset="100%" stop-color="#0F3460"/></linearGradient></defs>
+            </svg>
+            <div class="pwa-banner-text">
+                <div class="pwa-banner-title">Install Fibbl App</div>
+                <div class="pwa-banner-sub">Offline · Free · No ads</div>
+            </div>
+        </div>
+        <div class="pwa-banner-actions">
+            <button id="pwa-install-btn" class="pwa-btn-install" type="button">Install</button>
+            <button id="pwa-dismiss-btn" class="pwa-btn-dismiss" type="button" aria-label="Dismiss">×</button>
+        </div>
+    </div>
+
+    <!-- ═══════════════ iOS INSTALL TIP ═══════════════ -->
+    <div id="ios-install-tip" class="ios-tip-overlay hidden" role="dialog" aria-modal="true" aria-label="Add to home screen">
+        <div class="ios-tip-card">
+            <button id="ios-tip-close" class="ios-tip-close" type="button" aria-label="Close">×</button>
+            <div class="ios-tip-icon">
+                <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                    <rect width="40" height="40" rx="10" fill="url(#iosTipGrad)"/>
+                    <text x="12" y="27" font-family="Arial,sans-serif" font-size="22" font-weight="700" fill="white">F</text>
+                    <defs><linearGradient id="iosTipGrad" x1="0" y1="0" x2="40" y2="40"><stop offset="0%" stop-color="#1B4F8A"/><stop offset="100%" stop-color="#0F3460"/></linearGradient></defs>
+                </svg>
+            </div>
+            <div class="ios-tip-title">Install Fibbl on iPhone</div>
+            <div class="ios-tip-steps">
+                <div class="ios-tip-step">
+                    <span class="ios-step-num">1</span>
+                    <span>Tap the <strong>Share</strong> button
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;margin:0 2px"><path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" stroke="#1B4F8A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    in Safari</span>
+                </div>
+                <div class="ios-tip-step">
+                    <span class="ios-step-num">2</span>
+                    <span>Scroll down &amp; tap <strong>“Add to Home Screen”</strong></span>
+                </div>
+                <div class="ios-tip-step">
+                    <span class="ios-step-num">3</span>
+                    <span>Tap <strong>Add</strong> — Fibbl is now on your home screen!</span>
+                </div>
+            </div>
+            <button id="ios-tip-done" class="pwa-btn-install" type="button" style="width:100%;margin-top:12px">Got it!</button>
+        </div>
+    </div>
+
+    <!-- ═══════════════ SIDEBAR ═══════════════ -->
+    <nav id="sidebar" class="sidebar" aria-label="Main navigation">
+        <div class="sidebar-header">
+            <div class="sidebar-icon-wrap">
+                <!-- Fibbl Logo SVG -->
+                <svg class="sidebar-logo-svg" width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="40" height="40" rx="10" fill="url(#sidebarGrad)"/>
+                    <text x="12" y="27" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="white">F</text>
+                    <path d="M22 29 L25 24 L28 29" stroke="#10B981" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                    <defs>
+                        <linearGradient id="sidebarGrad" x1="0" y1="0" x2="40" y2="40">
+                            <stop offset="0%" stop-color="#1B4F8A"/>
+                            <stop offset="100%" stop-color="#0F3460"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+            </div>
+            <div class="sidebar-app-name">Fibbl</div>
+            <div class="sidebar-subtitle">Smart Cash Book</div>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="sidebar-item active" data-view="transactions">
+                <span class="si-icon">📒</span>
+                <span>Cash Book</span>
+            </li>
+            <li class="sidebar-item" data-view="accounts">
+                <span class="si-icon">🏦</span>
+                <span>Accounts</span>
+            </li>
+            <li class="sidebar-item" data-view="import">
+                <span class="si-icon">📥</span>
+                <span>Import Statement</span>
+            </li>
+            <li class="sidebar-item" data-view="settings">
+                <span class="si-icon">⚙️</span>
+                <span>Settings</span>
+            </li>
+            <li class="sidebar-item" data-view="about">
+                <span class="si-icon">ℹ️</span>
+                <span>About</span>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- ═══════════════ APP CONTAINER ═══════════════ -->
+    <div id="app" class="app">
+
+        <!-- ─── MAIN HEADER (Transaction list) ─── -->
+        <header id="main-header" class="header">
+            <button id="btn-hamburger" class="header-btn" aria-label="Open menu" type="button">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+            <button id="header-title" class="header-title" type="button" aria-label="Switch account">
+                <span id="header-account-name">Cash Book</span>
+                <svg class="dropdown-arrow" width="12" height="12" viewBox="0 0 12 12"><path d="M3 5l3 3 3-3" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+            </button>
+            <div class="header-spacer"></div>
+            <button id="btn-search" class="header-btn" aria-label="Search" type="button">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M16 16l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </button>
+            <button id="btn-menu" class="header-btn" aria-label="More options" type="button">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
+            </button>
+        </header>
+
+        <!-- ─── FORM HEADER (Add/Edit Transaction) ─── -->
+        <header id="form-header" class="header hidden">
+            <button id="btn-back" class="header-btn" aria-label="Go back" type="button">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <span id="form-title" class="header-title-text">Add Transaction</span>
+            <div class="header-spacer"></div>
+            <button id="btn-delete-tx" class="header-btn delete-btn hidden" aria-label="Delete transaction" type="button">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M3 6h18M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m-1 0v12a2 2 0 01-2 2H9a2 2 0 01-2-2V6h10z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+        </header>
+
+        <!-- ─── SETTINGS HEADER ─── -->
+        <header id="settings-header" class="header hidden">
+            <button id="btn-settings-back" class="header-btn" aria-label="Go back" type="button">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <span class="header-title-text">Settings</span>
+            <div class="header-spacer"></div>
+        </header>
+
+        <!-- ─── IMPORT HEADER ─── -->
+        <header id="import-header" class="header hidden">
+            <button id="btn-import-back" class="header-btn" aria-label="Go back" type="button">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <span class="header-title-text">Import Bank Statement</span>
+            <div class="header-spacer"></div>
+        </header>
+
+        <!-- ═══════════════ VIEW: TRANSACTIONS ═══════════════ -->
+        <main id="view-transactions" class="view active">
+            <!-- Filter Pills -->
+            <div class="filter-pills-row">
+                <div class="filter-pills">
+                    <button class="pill active" data-filter="all" type="button">All</button>
+                    <button class="pill" data-filter="daily" type="button">Daily</button>
+                    <button class="pill" data-filter="weekly" type="button">Weekly</button>
+                    <button class="pill" data-filter="monthly" type="button">Monthly</button>
+                    <button class="pill" data-filter="yearly" type="button">Yearly</button>
+                </div>
+            </div>
+
+            <!-- Date Navigation -->
+            <div class="date-nav">
+                <button id="btn-date-prev" class="date-nav-btn" type="button" aria-label="Previous period">
+                    <svg width="16" height="16" viewBox="0 0 16 16"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+                <span id="date-label" class="date-label">All</span>
+                <button id="btn-date-next" class="date-nav-btn" type="button" aria-label="Next period">
+                    <svg width="16" height="16" viewBox="0 0 16 16"><path d="M6 3l5 5-5 5" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+            </div>
+
+            <!-- Table Header -->
+            <div class="table-header">
+                <span class="th-date">Date</span>
+                <span class="th-cash-in">Cash In</span>
+                <span class="th-cash-out">Cash Out</span>
+            </div>
+
+            <!-- Transaction List -->
+            <div id="transaction-list" class="transaction-list" role="list">
+                <!-- Populated by transactions.js -->
+            </div>
+
+            <!-- Bottom Controls -->
+            <div class="bottom-controls">
+                <div class="bottom-buttons">
+                    <button id="btn-add-cash-in" class="btn-cash-in" type="button">Cash In</button>
+                    <button id="btn-add-cash-out" class="btn-cash-out" type="button">Cash Out</button>
+                </div>
+                <div class="summary-table">
+                    <div class="summary-row">
+                        <div class="summary-cell">
+                            <div class="summary-label">Total Cash In</div>
+                            <div id="summary-total-in" class="summary-value cash-in-color">0</div>
+                        </div>
+                        <div class="summary-cell">
+                            <div class="summary-label">Total Cash Out</div>
+                            <div id="summary-total-out" class="summary-value cash-out-color">0</div>
+                        </div>
+                        <div class="summary-cell">
+                            <div class="summary-label">Balance</div>
+                            <div id="summary-balance" class="summary-value">0</div>
+                        </div>
+                    </div>
+                    <div class="balance-footer">
+                        <div class="balance-row">
+                            <span>Opening Balance</span>
+                            <span id="summary-opening-balance">0</span>
+                        </div>
+                        <div class="balance-row total">
+                            <span>Balance</span>
+                            <span id="summary-total-balance">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- ═══════════════ VIEW: TRANSACTION FORM ═══════════════ -->
+        <main id="view-transaction-form" class="view hidden">
+            <div class="form-container">
+                <!-- Type Toggle -->
+                <div class="type-toggle">
+                    <button id="type-cash-in" class="type-btn" data-type="cashIn" type="button">Cash In</button>
+                    <button id="type-cash-out" class="type-btn active" data-type="cashOut" type="button">Cash Out</button>
+                </div>
+
+                <!-- Amount -->
+                <div class="form-amount-box">
+                    <span id="amount-label" class="amount-type-label cash-out-color">Cash Out</span>
+                    <input type="number" id="form-amount" class="amount-input" placeholder="0" step="0.01" min="0" inputmode="decimal" aria-label="Amount">
+                </div>
+
+                <!-- Description + Camera -->
+                <div class="form-desc-row">
+                    <input type="text" id="form-description" class="desc-input" placeholder="Description / Note" aria-label="Description">
+                    <button id="btn-camera" class="camera-btn" type="button" aria-label="Attach photo">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2v11z" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="13" r="4" stroke="currentColor" stroke-width="2"/></svg>
+                    </button>
+                    <input type="file" id="file-attachment" accept="image/*" capture="environment" class="sr-only">
+                </div>
+
+                <!-- Attachment Preview -->
+                <div id="attachment-preview" class="attachment-preview hidden">
+                    <img id="attachment-img" src="" alt="Attachment preview">
+                    <button id="btn-remove-attachment" class="remove-attachment-btn" type="button" aria-label="Remove attachment">✕</button>
+                </div>
+
+                <!-- Category -->
+                <div class="form-field">
+                    <label for="form-category">Category</label>
+                    <select id="form-category" class="form-select" aria-label="Category">
+                        <option value="">Select Category</option>
+                    </select>
+                </div>
+
+                <!-- Date & Time -->
+                <div class="form-datetime">
+                    <div class="form-field">
+                        <label for="form-date">Date</label>
+                        <input type="date" id="form-date" class="form-input" aria-label="Date">
+                    </div>
+                    <div class="form-field">
+                        <label for="form-time">Time</label>
+                        <input type="time" id="form-time" class="form-input" aria-label="Time">
+                    </div>
+                </div>
+
+                <!-- Account (readonly display) -->
+                <div class="form-field">
+                    <label>Account</label>
+                    <div id="form-account-name" class="form-static-field">Cash Book</div>
+                </div>
+
+                <!-- Save Button -->
+                <button id="btn-save-tx" class="btn-save" type="button">SAVE</button>
+            </div>
+        </main>
+
+        <!-- ═══════════════ VIEW: IMPORT ═══════════════ -->
+        <main id="view-import" class="view hidden">
+            <div class="import-container">
+
+                <!-- Progress Steps -->
+                <div class="import-progress-bar-track">
+                    <div class="import-progress-step active" id="prog-step-1">
+                        <div class="import-prog-dot">1</div>
+                        <span>File</span>
+                    </div>
+                    <div class="import-progress-connector"></div>
+                    <div class="import-progress-step" id="prog-step-2">
+                        <div class="import-prog-dot">2</div>
+                        <span>Map</span>
+                    </div>
+                    <div class="import-progress-connector"></div>
+                    <div class="import-progress-step" id="prog-step-3">
+                        <div class="import-prog-dot">3</div>
+                        <span>Preview</span>
+                    </div>
+                    <div class="import-progress-connector"></div>
+                    <div class="import-progress-step" id="prog-step-4">
+                        <div class="import-prog-dot">4</div>
+                        <span>Done</span>
+                    </div>
+                </div>
+
+                <!-- Progress Bar (loading) -->
+                <div id="import-progress-wrap" class="import-loading-wrap hidden">
+                    <div class="import-loading-track">
+                        <div id="import-progress-bar" class="import-loading-fill" style="width:0%"></div>
+                    </div>
+                    <div id="import-progress-label" class="import-loading-label"></div>
+                </div>
+
+                <!-- ── STEP 1: File Selection ── -->
+                <div id="import-step-1" class="import-step">
+                    <div id="import-drop-zone" class="import-drop-zone" role="button" tabindex="0" aria-label="Select Excel or CSV file">
+                        <div class="import-drop-icon">📂</div>
+                        <div class="import-drop-title">Select Bank Statement</div>
+                        <div class="import-drop-sub">XLSX · XLS · CSV</div>
+                        <div class="import-drop-hint">Click to browse or drag &amp; drop</div>
+                    </div>
+                    <input type="file" id="excel-file-input" accept=".xlsx,.xls,.csv" class="sr-only" aria-label="Select Excel or CSV file">
+
+                    <div id="import-file-info" class="import-file-info hidden">
+                        <div class="import-file-meta">
+                            <span class="import-file-icon">📄</span>
+                            <div class="import-file-details">
+                                <div class="import-file-name" id="import-file-name"></div>
+                                <div class="import-file-sub">
+                                    <span id="import-file-size"></span> &bull;
+                                    <span id="import-sheet-count"></span> sheet(s)
+                                </div>
+                            </div>
+                        </div>
+                        <div id="import-sheet-row" class="import-sheet-row hidden">
+                            <label class="import-label" for="import-sheet-select">Select Sheet</label>
+                            <select id="import-sheet-select" class="form-select"></select>
+                        </div>
+                    </div>
+
+                    <div id="import-step1-error" class="import-error hidden"></div>
+
+                    <button id="import-step1-next" class="btn-save" type="button" disabled>Next: Map Columns →</button>
+                </div>
+
+                <!-- ── STEP 2: Column Mapping ── -->
+                <div id="import-step-2" class="import-step hidden">
+                    <p class="import-section-label">Map your bank statement columns to Fibbl fields.</p>
+
+                    <div class="import-mapping-grid">
+                        <div class="import-map-row">
+                            <label class="import-map-label">📅 Date <span class="import-required">*</span></label>
+                            <select id="map-date" class="form-select"></select>
+                        </div>
+                        <div class="import-map-row">
+                            <label class="import-map-label">📝 Description <span class="import-required">*</span></label>
+                            <select id="map-description" class="form-select"></select>
+                        </div>
+                        <div class="import-map-row">
+                            <label class="import-map-label">🔴 Debit / Cash Out</label>
+                            <select id="map-debit" class="form-select"></select>
+                        </div>
+                        <div class="import-map-row">
+                            <label class="import-map-label">🟢 Credit / Cash In</label>
+                            <select id="map-credit" class="form-select"></select>
+                        </div>
+                        <div class="import-map-row" id="map-format-d-amount-row">
+                            <label class="import-map-label">💰 Amount (single col)</label>
+                            <select id="map-amount" class="form-select"></select>
+                        </div>
+                        <div class="import-map-row" id="map-format-d-type-row">
+                            <label class="import-map-label">🔀 Type (Dr/Cr col)</label>
+                            <select id="map-type" class="form-select"></select>
+                        </div>
+                        <div class="import-map-row">
+                            <label class="import-map-label">⚖️ Balance</label>
+                            <select id="map-balance" class="form-select"></select>
+                        </div>
+                        <div class="import-map-row">
+                            <label class="import-map-label">🏦 Import Into <span class="import-required">*</span></label>
+                            <select id="map-account" class="form-select"></select>
+                        </div>
+                    </div>
+
+                    <div id="import-step2-error" class="import-error hidden"></div>
+
+                    <div class="import-btn-row">
+                        <button id="import-step2-back" class="btn-secondary" type="button">← Back</button>
+                        <button id="import-step2-next" class="btn-primary" type="button">Preview →</button>
+                    </div>
+                </div>
+
+                <!-- ── STEP 3: Preview ── -->
+                <div id="import-step-3" class="import-step hidden">
+                    <div class="import-preview-stats">
+                        <div class="import-stat-item">
+                            <div class="import-stat-val" id="preview-stat-total">0</div>
+                            <div class="import-stat-label">Total</div>
+                        </div>
+                        <div class="import-stat-item">
+                            <div class="import-stat-val ready-color" id="preview-stat-valid">0</div>
+                            <div class="import-stat-label">Valid</div>
+                        </div>
+                        <div class="import-stat-item">
+                            <div class="import-stat-val danger-color" id="preview-stat-invalid">0</div>
+                            <div class="import-stat-label">Invalid</div>
+                        </div>
+                        <div class="import-stat-item">
+                            <div class="import-stat-val warn-color" id="preview-stat-dupes">0</div>
+                            <div class="import-stat-label">Duplicates</div>
+                        </div>
+                        <div class="import-stat-item">
+                            <div class="import-stat-val primary-color" id="preview-stat-selected">0</div>
+                            <div class="import-stat-label">Selected</div>
+                        </div>
+                    </div>
+
+                    <div class="import-preview-controls">
+                        <button id="import-select-all" class="btn-outline-sm" type="button">Select All</button>
+                        <button id="import-deselect-all" class="btn-outline-sm" type="button">Deselect All</button>
+                    </div>
+
+                    <div class="import-table-wrap">
+                        <table class="import-preview-table">
+                            <thead>
+                                <tr>
+                                    <th class="import-col-check"></th>
+                                    <th class="import-col-date">Date</th>
+                                    <th class="import-col-desc">Description</th>
+                                    <th class="import-col-in">Cash In</th>
+                                    <th class="import-col-out">Cash Out</th>
+                                    <th class="import-col-cat">Category</th>
+                                    <th class="import-col-status">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="import-preview-tbody">
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="import-btn-row">
+                        <button id="import-step3-back" class="btn-secondary" type="button">← Back</button>
+                        <button id="import-btn-import" class="btn-primary import-btn-main" type="button" disabled>IMPORT SELECTED</button>
+                    </div>
+                </div>
+
+                <!-- ── STEP 4: Result ── -->
+                <div id="import-step-4" class="import-step hidden">
+                    <div class="import-result-card">
+                        <div class="import-result-icon">✅</div>
+                        <div class="import-result-title">Import Complete</div>
+                        <div class="import-result-message" id="result-message"></div>
+                        <div class="import-result-stats">
+                            <div class="import-result-stat">
+                                <span class="import-result-num ready-color" id="result-imported">0</span>
+                                <span class="import-result-lbl">Imported</span>
+                            </div>
+                            <div class="import-result-stat">
+                                <span class="import-result-num" id="result-skipped">0</span>
+                                <span class="import-result-lbl">Skipped</span>
+                            </div>
+                            <div class="import-result-stat">
+                                <span class="import-result-num danger-color" id="result-invalid">0</span>
+                                <span class="import-result-lbl">Invalid</span>
+                            </div>
+                            <div class="import-result-stat">
+                                <span class="import-result-num warn-color" id="result-dupes">0</span>
+                                <span class="import-result-lbl">Duplicates</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="import-btn-col">
+                        <button id="import-goto-cashbook" class="btn-save" type="button">Go to Cash Book</button>
+                        <button id="import-another" class="btn-secondary" type="button">Import Another File</button>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+
+        <!-- ═══════════════ VIEW: SETTINGS ═══════════════ -->
+        <main id="view-settings" class="view hidden">
+            <div class="settings-container">
+                <!-- Display -->
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Display</h3>
+                    <div class="settings-item">
+                        <span class="settings-item-label">Dark Mode</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="toggle-dark-mode">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="settings-item">
+                        <span class="settings-item-label">Currency Symbol</span>
+                        <input type="text" id="settings-currency" class="settings-inline-input" maxlength="3">
+                    </div>
+                </div>
+
+                <!-- Data & Backup -->
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Data & Backup</h3>
+                    <button class="settings-item clickable" id="btn-export-backup" type="button">
+                        <span class="settings-item-label">Export Backup</span>
+                        <span class="settings-arrow">›</span>
+                    </button>
+                    <button class="settings-item clickable" id="btn-import-backup" type="button">
+                        <span class="settings-item-label">Import Backup</span>
+                        <span class="settings-arrow">›</span>
+                    </button>
+                    <button class="settings-item clickable danger" id="btn-delete-all" type="button">
+                        <span class="settings-item-label">Delete All Local Data</span>
+                        <span class="settings-arrow">›</span>
+                    </button>
+                </div>
+
+                <!-- Google Drive -->
+                <div class="settings-section">
+                    <h3 class="settings-section-title">Google Drive</h3>
+                    <div id="gdrive-status" class="settings-item">
+                        <span class="settings-item-label gdrive-not-configured">Google Drive is not configured.</span>
+                    </div>
+                    <button class="settings-item clickable" id="btn-gdrive-backup" type="button">
+                        <span class="settings-item-label">Backup to Google Drive</span>
+                        <span class="settings-arrow">›</span>
+                    </button>
+                    <button class="settings-item clickable" id="btn-gdrive-restore" type="button">
+                        <span class="settings-item-label">Restore from Google Drive</span>
+                        <span class="settings-arrow">›</span>
+                    </button>
+                </div>
+
+                <!-- About -->
+                <div class="settings-section">
+                    <h3 class="settings-section-title">About</h3>
+                    <div class="settings-item">
+                        <span class="settings-item-label">Version</span>
+                        <span class="settings-item-value">1.0.0</span>
+                    </div>
+                </div>
+            </div>
+            <input type="file" id="import-file-input" accept=".json" class="sr-only">
+        </main>
+
+    </div>
+    <!-- END #app -->
+
+    <!-- ═══════════════ DIALOGS / MODALS ═══════════════ -->
+
+    <!-- Account Selector -->
+    <div id="dialog-accounts" class="dialog-overlay hidden" role="dialog" aria-label="Select Account">
+        <div class="dialog accounts-dialog">
+            <div class="dialog-head">
+                <span class="dialog-title">Accounts</span>
+                <button id="btn-edit-accounts" class="dialog-action-btn" type="button">Edit</button>
+            </div>
+            <div id="account-list" class="account-list" role="listbox">
+                <!-- Populated by accounts.js -->
+            </div>
+            <button id="btn-add-account" class="btn-add-account" type="button">+ Add Account</button>
+        </div>
+    </div>
+
+    <!-- Account Form (Add/Edit) -->
+    <div id="dialog-account-form" class="dialog-overlay hidden" role="dialog" aria-label="Account Form">
+        <div class="dialog account-form-dialog">
+            <h3 id="account-form-title" class="dialog-title">Add Account</h3>
+            <div class="form-group">
+                <label for="account-name-input">Account Name</label>
+                <input type="text" id="account-name-input" class="form-input" placeholder="Enter account name">
+            </div>
+            <div class="form-group">
+                <label for="account-balance-input">Opening Balance</label>
+                <input type="number" id="account-balance-input" class="form-input" placeholder="0" step="0.01">
+            </div>
+            <div class="dialog-buttons">
+                <button id="btn-account-cancel" class="btn-secondary" type="button">Cancel</button>
+                <button id="btn-account-save" class="btn-primary" type="button">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter / Sort Menu -->
+    <div id="dialog-filter" class="dialog-overlay hidden" role="dialog" aria-label="Filter and Sort">
+        <div class="dialog filter-dialog">
+            <ul class="filter-menu" role="menu">
+                <li class="filter-menu-item filter-menu-item--share" data-action="share-app" role="menuitem" tabindex="0">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;margin-right:6px"><path d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Share App
+                </li>
+                <li class="filter-menu-item filter-menu-item--install" data-action="install-app" role="menuitem" tabindex="0">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="vertical-align:middle;margin-right:6px"><path d="M12 15V3m0 12l-4-4m4 4l4-4M2 17l.621 2.485A2 2 0 004.561 21h14.878a2 2 0 001.94-1.515L22 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Install App
+                </li>
+                <li class="filter-menu-divider"></li>
+                <li class="filter-menu-item" data-action="keyword-search" role="menuitem" tabindex="0">Keyword Search</li>
+                <li class="filter-menu-divider"></li>
+                <li class="filter-menu-item" data-action="filter-all" role="menuitem" tabindex="0">All</li>
+                <li class="filter-menu-item" data-action="filter-daily" role="menuitem" tabindex="0">Daily</li>
+                <li class="filter-menu-item" data-action="filter-weekly" role="menuitem" tabindex="0">Weekly</li>
+                <li class="filter-menu-item" data-action="filter-monthly" role="menuitem" tabindex="0">Monthly</li>
+                <li class="filter-menu-item" data-action="filter-yearly" role="menuitem" tabindex="0">Yearly</li>
+                <li class="filter-menu-divider"></li>
+                <li class="filter-menu-item" data-action="filter-date" role="menuitem" tabindex="0">Date</li>
+                <li class="filter-menu-item" data-action="filter-date-range" role="menuitem" tabindex="0">Select Date Range</li>
+                <li class="filter-menu-divider"></li>
+                <li class="filter-menu-item" data-action="report" role="menuitem" tabindex="0">Report</li>
+                <li class="filter-menu-divider"></li>
+                <li class="filter-menu-item" data-action="sort-asc" role="menuitem" tabindex="0">Date Ascending</li>
+                <li class="filter-menu-item" data-action="sort-desc" role="menuitem" tabindex="0">Date Descending</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Search -->
+    <div id="dialog-search" class="dialog-overlay hidden" role="dialog" aria-label="Search">
+        <div class="dialog search-dialog">
+            <div class="search-bar">
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/><path d="M16 16l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                <input type="text" id="search-input" class="search-input" placeholder="Search transactions..." autofocus>
+                <button id="btn-search-clear" class="search-clear-btn" type="button" aria-label="Clear search">✕</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Dialog -->
+    <div id="dialog-report" class="dialog-overlay hidden" role="dialog" aria-label="Generate Report">
+        <div class="dialog report-dialog">
+            <div class="report-toggle">
+                <button id="report-all-btn" class="report-tab active" type="button">All</button>
+                <button id="report-range-btn" class="report-tab" type="button">Select Date Range</button>
+            </div>
+            <div id="report-dates" class="report-dates hidden">
+                <div class="report-date-field">
+                    <label>Start Date</label>
+                    <div class="date-input-wrap">
+                        <span class="date-icon">📅</span>
+                        <input type="date" id="report-start-date" class="form-input">
+                    </div>
+                </div>
+                <div class="report-date-field">
+                    <label>End Date</label>
+                    <div class="date-input-wrap">
+                        <span class="date-icon">📅</span>
+                        <input type="date" id="report-end-date" class="form-input">
+                    </div>
+                </div>
+            </div>
+            <div class="report-format">
+                <label class="radio-option">
+                    <input type="radio" name="report-format" value="pdf" checked>
+                    <span class="radio-label-text pdf-color">PDF</span>
+                </label>
+                <label class="radio-option">
+                    <input type="radio" name="report-format" value="excel">
+                    <span class="radio-label-text excel-color">EXCEL</span>
+                </label>
+            </div>
+            <button id="btn-report-ok" class="btn-primary full-width" type="button">OK</button>
+        </div>
+    </div>
+
+    <!-- Date Picker (for single date filter) -->
+    <div id="dialog-date-picker" class="dialog-overlay hidden" role="dialog" aria-label="Select Date">
+        <div class="dialog compact-dialog">
+            <h3 class="dialog-title">Select Date</h3>
+            <input type="date" id="filter-date-input" class="form-input">
+            <div class="dialog-buttons">
+                <button id="btn-date-cancel" class="btn-secondary" type="button">Cancel</button>
+                <button id="btn-date-ok" class="btn-primary" type="button">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Date Range Picker (for date range filter) -->
+    <div id="dialog-date-range" class="dialog-overlay hidden" role="dialog" aria-label="Select Date Range">
+        <div class="dialog compact-dialog">
+            <h3 class="dialog-title">Select Date Range</h3>
+            <div class="form-group">
+                <label for="range-start-date">Start Date</label>
+                <input type="date" id="range-start-date" class="form-input">
+            </div>
+            <div class="form-group">
+                <label for="range-end-date">End Date</label>
+                <input type="date" id="range-end-date" class="form-input">
+            </div>
+            <div class="dialog-buttons">
+                <button id="btn-range-cancel" class="btn-secondary" type="button">Cancel</button>
+                <button id="btn-range-ok" class="btn-primary" type="button">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirm Dialog -->
+    <div id="dialog-confirm" class="dialog-overlay hidden" role="alertdialog" aria-label="Confirmation">
+        <div class="dialog confirm-dialog">
+            <p id="confirm-message" class="confirm-text">Are you sure?</p>
+            <div class="dialog-buttons">
+                <button id="btn-confirm-cancel" class="btn-secondary" type="button">Cancel</button>
+                <button id="btn-confirm-ok" class="btn-primary" type="button">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+    <!-- ═══════════════ SCRIPTS ═══════════════ -->
+    <script src="assets/vendor/xlsx/xlsx.full.min.js"></script>
+    <script src="config.js"></script>
+    <script src="assets/js/db.js"></script>
+    <script src="assets/js/repository.js"></script>
+    <script src="assets/js/transactions.js"></script>
+    <script src="assets/js/transaction-form.js"></script>
+    <script src="assets/js/accounts.js"></script>
+    <script src="assets/js/reports.js"></script>
+    <script src="assets/js/backup.js"></script>
+    <script src="assets/js/settings.js"></script>
+    <script src="assets/js/googleDrive.js"></script>
+    <script src="assets/js/excelImporter.js"></script>
+    <script src="assets/js/import.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html>
